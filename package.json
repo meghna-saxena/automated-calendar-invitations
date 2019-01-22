@@ -1,0 +1,25 @@
+{
+  "name": "automated-calendar-invitations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meghna-saxena/automated-calendar-invitations.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meghna-saxena/automated-calendar-invitations/issues"
+  },
+  "homepage": "https://github.com/meghna-saxena/automated-calendar-invitations#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.13",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.4"
+  }
+}
