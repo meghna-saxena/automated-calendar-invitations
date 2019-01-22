@@ -77,7 +77,7 @@ var SIX_MONTHS_EVENTS = [
     { title: 'Probation Feedback', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', daysAfter: 180 }
 ];
 var schedule = [DAY_ONE_EVENTS, DAY_TWO_EVENTS, DAY_THREE_EVENTS, DAY_FOUR_EVENTS, DAY_FIVE_EVENTS, DAY_SIX_EVENTS, DAY_SEVEN_EVENTS, DAY_EIGHT_EVENTS, DAY_TEN_EVENTS, DAY_FIFTEEN_EVENTS, ONE_MONTH_EVENTS, THREE_MONTHS_EVENTS, SIX_MONTHS_EVENTS];
-var SECONDS_IN_ONE_DAY = 24 * 60 * 60;
+var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 /* -------------------------------------------------------- */
 // CHECK IF STATIC HOLIDAY
 /* -------------------------------------------------------- */
@@ -103,19 +103,19 @@ function isStaticHoliday(date, month) {
 /* --------------------------------------------------------------- */
 // CHECK IF WEEKEND
 /* --------------------------------------------------------------- */
-function isWeekend(day) {
-    return (day == 0 || day == 6); // Sunday - Saturday : 0 - 6
+function isWeekend(date) {
+    return (date.getDay() == 0 || date.getDay() == 6); // Sunday - Saturday : 0 - 6;
 }
+exports.isWeekend = isWeekend;
 /* ------------------------------------------------------------ */
 // CHECK IF HOLIDAY
 /* ------------------------------------------------------------ */
 function isHoliday(timestamp) {
     var date = new Date(timestamp); // Sat Jan 19 2019 21:54:19 
     var currentDate = date.getDate(); // 17
-    var day = date.getDay(); // 6
     var month = date.getMonth() + 1; // date.getMonth() gives 0 and NOT Jan!
     var year = date.getFullYear(); // 2019
-    var isHoliday = isWeekend(day) || isStaticHoliday(currentDate, month);
+    var isHoliday = isWeekend(date) || isStaticHoliday(currentDate, month);
     return isHoliday;
 }
 ;
@@ -124,7 +124,7 @@ function isHoliday(timestamp) {
 /* ------------------------------------------------------------- */
 function getNextWorkingDay(timestamp) {
     if (isHoliday(timestamp)) {
-        var nextWorkingDay = timestamp + SECONDS_IN_ONE_DAY * 1000;
+        var nextWorkingDay = timestamp + MILLISECONDS_IN_ONE_DAY;
         return getNextWorkingDay(nextWorkingDay);
     }
     else {
@@ -148,22 +148,17 @@ function getDateString(date) {
 // CREATE MEETINGS  
 /* ------------------------------------------------------------- */
 function createMeetings(startingTimestamp, newEmployeeEmailId, TLEmailId, buddyEmailId) {
-    var startingDate = new Date(startingTimestamp); //Thu Jan 21 2019 12:15:08 GMT+0100 (Central European Standard Time)
-    var oneMonth = startingTimestamp + SECONDS_IN_ONE_DAY * 1000 * 30;
-    var threeMonths = startingTimestamp + SECONDS_IN_ONE_DAY * 1000 * 90;
-    var sixMonths = startingTimestamp + SECONDS_IN_ONE_DAY * 1000 * 180;
+    var date = new Date(startingTimestamp); //Thu Jan 21 2019 12:15:08 GMT+0100 (Central European Standard Time)
+    var oneMonth = startingTimestamp + MILLISECONDS_IN_ONE_DAY * 30;
+    var threeMonths = startingTimestamp + MILLISECONDS_IN_ONE_DAY * 90;
+    var sixMonths = startingTimestamp + MILLISECONDS_IN_ONE_DAY * 180;
     var oneMonthString = getNextWorkingDay(oneMonth);
     var threeMonthString = getNextWorkingDay(threeMonths);
     var sixMonthString = getNextWorkingDay(sixMonths);
-    /*Logger.log('oneMonthString' + oneMonthString);
-    Logger.log('threeMonthString' + threeMonthString);
-    Logger.log('sixMonthString' + sixMonthString); */
-    var date = startingDate;
     for (var i = 0; i < schedule.length; i++) {
-        var newDate = new Date(date).getTime();
+        var newDate = new Date(date.getTime());
         createMeetingsPerDay(schedule[i], getDateString(date), newEmployeeEmailId, TLEmailId, buddyEmailId, getDateString(oneMonthString), getDateString(threeMonthString), getDateString(sixMonthString));
-        date = getNextWorkingDay(newDate + SECONDS_IN_ONE_DAY * 1000); //Jan 22 
-        //Logger.log('DATE' + date);
+        date = getNextWorkingDay(newDate.getTime() + MILLISECONDS_IN_ONE_DAY); //Jan 22 
     }
 }
 function createMeetingsPerDay(daySchedule, dateString, newEmployeeEmailId, TLEmailId, buddyEmailId, oneMonthString, threeMonthString, sixMonthString) {
