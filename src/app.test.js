@@ -19,3 +19,39 @@ describe('isWeekend', function () {
         expect(result).toBeTruthy();
     });
 });
+describe('isStaticHoliday', function () {
+    it('should return true for holiday', function () {
+        // Given
+        var date = new Date('Dec 25, 2019'); // Holiday
+        // When
+        var result = app_1.isStaticHoliday(date);
+        // Then | Assert
+        expect(result).toBeTruthy();
+    });
+    it('should return false when not a holiday', function () {
+        // Given
+        var date = new Date('January 03, 2019'); // Not a holiday
+        // When
+        var result = app_1.isStaticHoliday(date);
+        // Then | Assert
+        expect(result).toBeFalsy();
+    });
+});
+describe('isHoliday', function () {
+    it('should return true if weekend or static holiday', function () {
+        var holiday = new Date('Dec 25, 2019'); // Holiday
+        var weekend = new Date('January 05, 2019'); // Saturday
+        var holidayResult = app_1.isHoliday(holiday);
+        var weekendResult = app_1.isHoliday(weekend);
+        expect(holidayResult).toBeTruthy();
+        expect(weekendResult).toBeTruthy();
+    });
+    it('should return false if not weekend or not static holiday', function () {
+        var notHoliday = new Date('January 03, 2019'); // Not a holiday
+        var weekday = new Date('January 08, 2019'); // Tuesday
+        var notHolidayResult = app_1.isHoliday(notHoliday);
+        var weekDayResult = app_1.isHoliday(weekday);
+        expect(notHolidayResult).toBeFalsy();
+        expect(weekDayResult).toBeFalsy();
+    });
+});

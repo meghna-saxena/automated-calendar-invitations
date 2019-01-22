@@ -93,13 +93,16 @@ var STATIC_NATIONAL_HOLIDAYS = [
     // 2nd Day of Christmas
     { day: 26, month: 12 }
 ];
-function isStaticHoliday(date, month) {
+function isStaticHoliday(date) {
     for (var i = 0; i < STATIC_NATIONAL_HOLIDAYS.length; i++) {
-        if (STATIC_NATIONAL_HOLIDAYS[i].day === date && STATIC_NATIONAL_HOLIDAYS[i].month === month) {
+        if (STATIC_NATIONAL_HOLIDAYS[i].day === date.getDate()
+            && STATIC_NATIONAL_HOLIDAYS[i].month === date.getMonth() + 1) { // Months start with index 0
             return true;
         }
     }
+    return false;
 }
+exports.isStaticHoliday = isStaticHoliday;
 /* --------------------------------------------------------------- */
 // CHECK IF WEEKEND
 /* --------------------------------------------------------------- */
@@ -110,20 +113,17 @@ exports.isWeekend = isWeekend;
 /* ------------------------------------------------------------ */
 // CHECK IF HOLIDAY
 /* ------------------------------------------------------------ */
-function isHoliday(timestamp) {
-    var date = new Date(timestamp); // Sat Jan 19 2019 21:54:19 
-    var currentDate = date.getDate(); // 17
-    var month = date.getMonth() + 1; // date.getMonth() gives 0 and NOT Jan!
-    var year = date.getFullYear(); // 2019
-    var isHoliday = isWeekend(date) || isStaticHoliday(currentDate, month);
+function isHoliday(date) {
+    var isHoliday = isWeekend(date) || isStaticHoliday(date);
     return isHoliday;
 }
+exports.isHoliday = isHoliday;
 ;
 /* ------------------------------------------------------------- */
 // GET NEXT WORKING DAYS
 /* ------------------------------------------------------------- */
 function getNextWorkingDay(timestamp) {
-    if (isHoliday(timestamp)) {
+    if (isHoliday(new Date(timestamp))) {
         var nextWorkingDay = timestamp + MILLISECONDS_IN_ONE_DAY;
         return getNextWorkingDay(nextWorkingDay);
     }
