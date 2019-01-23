@@ -130,19 +130,18 @@ export function isWeekend(date: Date): Boolean { // should return true for weeke
 // CHECK IF HOLIDAY
 /* ------------------------------------------------------------ */
 export function isHoliday(date: Date):Boolean { // should return true for holiday else false 
-    const isHoliday = isWeekend(date) || isStaticHoliday(date);
-    return isHoliday;
+    return isWeekend(date) || isStaticHoliday(date);
 };
 
 /* ------------------------------------------------------------- */
 // GET NEXT WORKING DAYS
 /* ------------------------------------------------------------- */
-function getNextWorkingDay(timestamp: number): Date { //should return next working day, eg Fri Jan 18 2019 10:48:06 GMT+0100 (CET)
-    if (isHoliday(new Date(timestamp))) {
-        var nextWorkingDay = timestamp + MILLISECONDS_IN_ONE_DAY;
-        return getNextWorkingDay(nextWorkingDay);
+export function getNextWorkingDay(date: Date, daysAfter: number = 1): Date { //should return next working day, eg Fri Jan 18 2019 10:48:06 GMT+0100 (CET)
+    const nextWorkingDate = new Date(date.getTime() + MILLISECONDS_IN_ONE_DAY);
+    if (isHoliday(nextWorkingDate)) {
+        return getNextWorkingDay(nextWorkingDate);
     } else {
-        return new Date(timestamp);
+        return nextWorkingDate;
     }
 };
 
@@ -169,16 +168,16 @@ function createMeetings(startingTimestamp: number, newEmployeeEmailId: string, T
     var threeMonths = startingTimestamp + MILLISECONDS_IN_ONE_DAY * 90;
     var sixMonths = startingTimestamp + MILLISECONDS_IN_ONE_DAY * 180;
 
-    var oneMonthString = getNextWorkingDay(oneMonth);
-    var threeMonthString = getNextWorkingDay(threeMonths);
-    var sixMonthString = getNextWorkingDay(sixMonths);
+    // var oneMonthString = getNextWorkingDay(oneMonth);
+    // var threeMonthString = getNextWorkingDay(threeMonths);
+    // var sixMonthString = getNextWorkingDay(sixMonths);
 
     for (var i = 0; i < schedule.length; i++) {
         var newDate = new Date(date.getTime());
 
-        createMeetingsPerDay(schedule[i], getDateString(date), newEmployeeEmailId, TLEmailId, buddyEmailId,
-            getDateString(oneMonthString), getDateString(threeMonthString), getDateString(sixMonthString));
-        date = getNextWorkingDay(newDate.getTime() + MILLISECONDS_IN_ONE_DAY) //Jan 22 
+        // createMeetingsPerDay(schedule[i], getDateString(date), newEmployeeEmailId, TLEmailId, buddyEmailId,
+        //     getDateString(oneMonthString), getDateString(threeMonthString), getDateString(sixMonthString));
+        // date = getNextWorkingDay(newDate.getTime() + MILLISECONDS_IN_ONE_DAY) //Jan 22 
     }
 }
 
