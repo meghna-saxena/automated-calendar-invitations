@@ -68,6 +68,32 @@ describe('getNextWorkingDay', function () {
         var actualDate = app_1.getNextWorkingDay(currentDate, 7);
         expect(actualDate.getTime()).toBe(expectedDate.getTime());
     });
+    it('should return the next working date after added days is a holiday', function () {
+        var currentDate = new Date('January 02, 2019'); // Wednesday
+        var expectedDate = new Date('January 14, 2019'); // next working day after 10 days
+        var actualDate = app_1.getNextWorkingDay(currentDate, 10);
+        expect(actualDate.getTime()).toBe(expectedDate.getTime());
+    });
+});
+describe('getNthWorkingDay', function () {
+    it('should return starting day when n=1', function () {
+        var date = new Date('January 04, 2019'); // Friday
+        var expected = new Date('January 04, 2019');
+        var actual = app_1.getNthWorkingDay(date, 1);
+        expectOnDates(actual, expected);
+    });
+    it('should return 2nd day when n=2', function () {
+        var date = new Date('January 04, 2019'); // Friday
+        var expected = new Date('January 07, 2019');
+        var actual = app_1.getNthWorkingDay(date, 2);
+        expectOnDates(actual, expected);
+    });
+    it('should return 5th day when n=5', function () {
+        var date = new Date('January 04, 2019'); // Friday
+        var expected = new Date('January 10, 2019');
+        var actual = app_1.getNthWorkingDay(date, 5);
+        expectOnDates(actual, expected);
+    });
 });
 describe('getDateString', function () {
     it('should return date in the format `MM DD,YYYY`', function () {
@@ -77,13 +103,52 @@ describe('getDateString', function () {
         expect(actualDate).toBe(expectedDate);
     });
 });
+describe('getGuestStringBy', function () {
+    var buddyEmail = "buddyEmail";
+    var TLEmail = "TLEmail";
+    var mandatoryEmail = "mandatory";
+    it('should include TL and not buddy if isTLPresent is true', function () {
+        var result = app_1.getGuestStringBy(true, buddyEmail, TLEmail, mandatoryEmail);
+        expect(result).toBe(mandatoryEmail + ", " + TLEmail);
+    });
+    it('should include buddy and not TL if isTLPresent is false', function () {
+        var result = app_1.getGuestStringBy(false, buddyEmail, TLEmail, mandatoryEmail);
+        expect(result).toBe(mandatoryEmail + ", " + buddyEmail);
+    });
+});
 describe('createMeetings', function () {
-    it('should get return value of date from getDateString', function () {
-    });
-    it('should call createMeetingsPerDay', function () {
-    });
-    it('should pass each item of schedules array to createMeetingsPerDay', function () {
+    it('should pass each item of schedule array to createMeetingsPerDay', function () {
+        var mockCreateMeetingPerDay = jest.fn(function (x) { return x; });
+        var schedule = [0, 1, 2];
+        // createMeetings();
+        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
+        // expect(mockCreateMeetingPerDay.mock.calls[0][0]).toBe(0);
     });
     it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', function () {
+        var date = Date.now();
+        var TLEmail = 'ddsdadad';
+        var buddyEmail = 'asddadadt';
+        var newEmployeeEmail = 'sdada';
+        var schedule = [0, 1, 2];
+        var mockCreateMeetingPerDay = jest.fn(function (x) { return x; });
+        // createMeetings(TLEmail, buddyEmail, newEmployeeEmail, schedule);
+        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
+        expect(mockCreateMeetingPerDay.mock.calls);
+    });
+});
+describe('createMeetingForEvent', function () {
+    it('should create meetings for given day', function () {
+        var date = new Date('02 Janaury 2019'); // Wednesday
+        var event = {
+            title: 'Buddy Intro',
+            start: '11:00:00 UTC',
+            end: '11:20:00 UTC',
+            description: 'Introduction to Team Members',
+            isTLPresent: false,
+            day: 0
+        };
+        var guests = "guest";
+        app_1.createMeetingForEvent(date, event, guests);
+        // Then => assert that mock is called.
     });
 });

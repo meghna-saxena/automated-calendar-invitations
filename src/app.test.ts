@@ -1,4 +1,4 @@
-import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString } from './app';
+import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString, getGuestStringBy, createMeetingForEvent, Event, getNthWorkingDay } from './app';
 
 describe('isWeekend', () => {
     it('should return false for weekday', () => {
@@ -63,7 +63,6 @@ describe('isHoliday', () => {
     })
 });
 
-
 function expectOnDates(actual: Date, expected: Date) {
     expect(actual.getTime()).toBe(expected.getTime());
 }
@@ -95,6 +94,44 @@ describe('getNextWorkingDay', () => {
 
         expect(actualDate.getTime()).toBe(expectedDate.getTime());
     });
+
+    it('should return the next working date after added days is a holiday', () => {
+        const currentDate = new Date('January 02, 2019'); // Wednesday
+        const expectedDate = new Date('January 14, 2019'); // next working day after 10 days
+
+        const actualDate = getNextWorkingDay(currentDate, 10);
+
+        expect(actualDate.getTime()).toBe(expectedDate.getTime());
+    });
+});
+
+describe('getNthWorkingDay', () => {
+    it('should return starting day when n=1', () => {
+        const date = new Date('January 04, 2019'); // Friday
+        const expected = new Date('January 04, 2019');
+
+        const actual = getNthWorkingDay(date, 1);
+
+        expectOnDates(actual, expected);
+    });
+
+    it('should return 2nd day when n=2', () => {
+        const date = new Date('January 04, 2019'); // Friday
+        const expected = new Date('January 07, 2019');
+
+        const actual = getNthWorkingDay(date, 2);
+
+        expectOnDates(actual, expected);
+    });
+
+    it('should return 5th day when n=5', () => {
+        const date = new Date('January 04, 2019'); // Friday
+        const expected = new Date('January 10, 2019');
+
+        const actual = getNthWorkingDay(date, 5);
+
+        expectOnDates(actual, expected);
+    });
 });
 
 describe('getDateString', () => {
@@ -108,20 +145,63 @@ describe('getDateString', () => {
     })
 })
 
+describe('getGuestStringBy', () => {
+    const buddyEmail = "buddyEmail";
+    const TLEmail = "TLEmail";
+    const mandatoryEmail = "mandatory";
+    it('should include TL and not buddy if isTLPresent is true', () => {
+        const result = getGuestStringBy(true, buddyEmail, TLEmail, mandatoryEmail);
+
+        expect(result).toBe(`${mandatoryEmail}, ${TLEmail}`);
+    });
+
+    it('should include buddy and not TL if isTLPresent is false', () => {
+        const result = getGuestStringBy(false, buddyEmail, TLEmail, mandatoryEmail);
+
+        expect(result).toBe(`${mandatoryEmail}, ${buddyEmail}`);
+    });
+});
+
 describe('createMeetings', () => {
-    it('should get return value of date from getDateString', () => {
+    it('should pass each item of schedule array to createMeetingsPerDay', () => {
+        const mockCreateMeetingPerDay = jest.fn(x => x);
+        const schedule = [0, 1, 2];
+        // createMeetings();
 
-    })
-
-    it('should call createMeetingsPerDay', () => {
-
-    })
-
-    it('should pass each item of schedules array to createMeetingsPerDay', () => {
-
+        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
+        // expect(mockCreateMeetingPerDay.mock.calls[0][0]).toBe(0);
     })
 
     it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', () => {
+        const date = Date.now();
+        const TLEmail = 'ddsdadad';
+        const buddyEmail = 'asddadadt';
+        const newEmployeeEmail = 'sdada';
+        const schedule = [0, 1, 2];
 
+        const mockCreateMeetingPerDay = jest.fn(x => x);
+        // createMeetings(TLEmail, buddyEmail, newEmployeeEmail, schedule);
+
+        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
+        expect(mockCreateMeetingPerDay.mock.calls)
     })
 })
+
+describe('createMeetingForEvent', () => {
+    it('should create meetings for given day', () => {
+        const date = new Date('02 Janaury 2019'); // Wednesday
+        const event: Event = {
+            title: 'Buddy Intro',
+            start: '11:00:00 UTC',
+            end: '11:20:00 UTC',
+            description: 'Introduction to Team Members',
+            isTLPresent: false,
+            day: 0
+        }
+        const guests = "guest";
+
+        createMeetingForEvent(date, event, guests);
+
+        // Then => assert that mock is called.
+    });
+});
