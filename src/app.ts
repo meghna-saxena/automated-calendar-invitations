@@ -95,7 +95,6 @@ var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 /* -------------------------------------------------------- */
 // CHECK IF STATIC HOLIDAY
 /* -------------------------------------------------------- */
-
 var STATIC_NATIONAL_HOLIDAYS = [
     // New Year’s Day
     { day: 1, month: 1 },
@@ -122,22 +121,32 @@ export function isStaticHoliday(date: Date): Boolean {
 /* --------------------------------------------------------------- */
 // CHECK IF WEEKEND
 /* --------------------------------------------------------------- */
-export function isWeekend(date: Date): Boolean { // should return true for weekend else false
+export function isWeekend(date: Date): Boolean {
     return (date.getDay() == 0 || date.getDay() == 6); // Sunday - Saturday : 0 - 6;
 }
 
 /* ------------------------------------------------------------ */
 // CHECK IF HOLIDAY
 /* ------------------------------------------------------------ */
-export function isHoliday(date: Date):Boolean { // should return true for holiday else false 
+export function isHoliday(date: Date): Boolean {
     return isWeekend(date) || isStaticHoliday(date);
 };
 
 /* ------------------------------------------------------------- */
 // GET NEXT WORKING DAYS
 /* ------------------------------------------------------------- */
+// export function getNextWorkingDay(date: Date, daysAfter: number = 1): Date { //should return next working day, eg Fri Jan 18 2019 10:48:06 GMT+0100 (CET)
+//     const nextWorkingDate = new Date(date.getTime() + MILLISECONDS_IN_ONE_DAY);
+//     if (isHoliday(nextWorkingDate)) {
+//         return getNextWorkingDay(nextWorkingDate);
+//     } else {
+//         return nextWorkingDate;
+//     }
+// };
+
 export function getNextWorkingDay(date: Date, daysAfter: number = 1): Date { //should return next working day, eg Fri Jan 18 2019 10:48:06 GMT+0100 (CET)
-    const nextWorkingDate = new Date(date.getTime() + MILLISECONDS_IN_ONE_DAY);
+    const nextWorkingDate = new Date(date.getTime() + MILLISECONDS_IN_ONE_DAY * daysAfter);
+
     if (isHoliday(nextWorkingDate)) {
         return getNextWorkingDay(nextWorkingDate);
     } else {
@@ -201,13 +210,7 @@ function createMeetingsPerDay(daySchedule: any, dateString: string, newEmployeeE
             endDate = new Date(sixMonthString + " " + meeting.end);
         }
 
-
         var guests = meeting.isTLPresent ? TL : buddy;
-
-        // CalendarApp.getDefaultCalendar().createEvent(
-        //     meeting.title, startDate, endDate,
-        //     { guests: guests, sendInvites: true }).setDescription(meeting.description);
-
         console.log(meeting.title, startDate, endDate);
     }
 }

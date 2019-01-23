@@ -1,4 +1,3 @@
-import { runOnSubmit } from './app';
 import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay } from './app';
 
 describe('isWeekend', () => {
@@ -73,6 +72,11 @@ describe('isHoliday', () => {
     })
 });
 
+
+function expectOnDates(actual: Date, expected: Date) {
+    expect(actual.getTime()).toBe(expected.getTime());
+}
+
 describe('getNextWorkingDay', () => {
     it('should return next date if it is not a holiday', () => {
         const currentDate = new Date('January 02, 2019');
@@ -93,15 +97,11 @@ describe('getNextWorkingDay', () => {
     });
 
     it('should return the working date after given days if not a holiday', () => {
-        const currentDate = new Date('January 02, 2019'); // Tuesday
+        const currentDate = new Date('January 02, 2019'); // Wednesday
         const expectedDate = new Date('January 09, 2019'); // after 7 days and not a holiday
 
         const actualDate = getNextWorkingDay(currentDate, 7);
 
-        expect(actualDate).toBe(expectedDate);
+        expect(actualDate.getTime()).toBe(expectedDate.getTime());
     });
 });
-
-function expectOnDates(actual: Date, expected: Date) {
-    expect(actual.getTime()).toBe(expected.getTime());
-}

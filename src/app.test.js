@@ -55,6 +55,9 @@ describe('isHoliday', function () {
         expect(weekDayResult).toBeFalsy();
     });
 });
+function expectOnDates(actual, expected) {
+    expect(actual.getTime()).toBe(expected.getTime());
+}
 describe('getNextWorkingDay', function () {
     it('should return next date if it is not a holiday', function () {
         var currentDate = new Date('January 02, 2019');
@@ -69,12 +72,9 @@ describe('getNextWorkingDay', function () {
         expectOnDates(actualDate, expectedDate);
     });
     it('should return the working date after given days if not a holiday', function () {
-        var currentDate = new Date('January 02, 2019'); // Tuesday
+        var currentDate = new Date('January 02, 2019'); // Wednesday
         var expectedDate = new Date('January 09, 2019'); // after 7 days and not a holiday
         var actualDate = app_1.getNextWorkingDay(currentDate, 7);
-        expect(actualDate).toBe(expectedDate);
+        expect(actualDate.getTime()).toBe(expectedDate.getTime());
     });
 });
-function expectOnDates(actual, expected) {
-    expect(actual.getTime()).toBe(expected.getTime());
-}
