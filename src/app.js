@@ -38,43 +38,43 @@ var DAY_ONE_EVENTS = [
     }
 ];
 var DAY_TWO_EVENTS = [
-    { title: 'Buddy Knowledge Sharing', start: '10:00:00 UTC', end: '10:30:00 UTC', description: 'Knowledge Sharing Services/Applications Overview', daysAfter: 1 },
-    { title: 'Buddy Pairing Work', start: '15:00:00 UTC', end: '17:30:00 UTC', description: 'Get hands on by working on the Buddy\'s task together with him', daysAfter: 1 }
+    { title: 'Buddy Knowledge Sharing', start: '10:00:00 UTC', end: '10:30:00 UTC', description: 'Knowledge Sharing Services/Applications Overview', isTLPresent: false, daysAfter: 1 },
+    { title: 'Buddy Pairing Work', start: '15:00:00 UTC', end: '17:30:00 UTC', description: 'Get hands on by working on the Buddy\'s task together with him', isTLPresent: false, daysAfter: 1 }
 ];
 var DAY_THREE_EVENTS = [
-    { title: 'Team Lead Knowledge Sharing', start: '10:00:00 UTC', end: '11:00:00 UTC', description: 'Business scenarios and Services/Applications', daysAfter: 2 },
-    { title: 'Buddy Pairing Work', start: '14:00:00 UTC', end: '14:20:00 UTC', description: 'Introduction to first own task', daysAfter: 2 }
+    { title: 'Team Lead Knowledge Sharing', start: '10:00:00 UTC', end: '11:00:00 UTC', description: 'Business scenarios and Services/Applications', isTLPresent: true, daysAfter: 2 },
+    { title: 'Buddy Pairing Work', start: '14:00:00 UTC', end: '14:20:00 UTC', description: 'Introduction to first own task', isTLPresent: false, daysAfter: 2 }
 ];
 var DAY_FOUR_EVENTS = [
-    { title: 'Buddy Status Check', start: '10:10:00 UTC', end: '10:30:00 UTC', daysAfter: 3 }
+    { title: 'Buddy Status Check', start: '10:10:00 UTC', end: '10:30:00 UTC', isTLPresent: false, daysAfter: 3 }
 ];
 var DAY_FIVE_EVENTS = [
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Common libraries and testing', daysAfter: 4 },
-    { title: 'Team Lead Recap', start: '17:00:00 UTC', end: '17:20:00 UTC', description: 'Feedback on first week', daysAfter: 4 }
+    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Common libraries and testing', isTLPresent: false, daysAfter: 4 },
+    { title: 'Team Lead Recap', start: '17:00:00 UTC', end: '17:20:00 UTC', description: 'Feedback on first week', isTLPresent: true, daysAfter: 4 }
 ];
 var DAY_SIX_EVENTS = [
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Monitoring and Operations of Services/Applications', daysAfter: 5 }
+    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Monitoring and Operations of Services/Applications', isTLPresent: false, daysAfter: 5 }
 ];
 var DAY_SEVEN_EVENTS = [
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Deployments, Maintenance and troubleshooting Services/Applications', daysAfter: 6 }
+    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Deployments, Maintenance and troubleshooting Services/Applications', isTLPresent: false, daysAfter: 6 }
 ];
 var DAY_EIGHT_EVENTS = [
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Writing and maintaining Acceptance and End-to-end Tests', daysAfter: 7 }
+    { title: 'Buddy Knowledge Sharing', start: '10:10:00 UTC', end: '10:30:00 UTC', description: 'Writing and maintaining Acceptance and End-to-end Tests', isTLPresent: false, daysAfter: 7 }
 ];
 var DAY_TEN_EVENTS = [
-    { title: 'Buddy Recap', start: '17:00:00 UTC', end: '17:30:00 UTC', daysAfter: 9 }
+    { title: 'Buddy Recap', start: '17:00:00 UTC', end: '17:30:00 UTC', isTLPresent: false, daysAfter: 9 }
 ];
 var DAY_FIFTEEN_EVENTS = [
-    { title: 'Team Lead Recap', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'How was onboarding?', daysAfter: 14 }
+    { title: 'Team Lead Recap', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'How was onboarding?', isTLPresent: true, daysAfter: 14 }
 ];
 var ONE_MONTH_EVENTS = [
     { title: 'Director Recap', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', isTLPresent: true, daysAfter: 30 },
 ];
 var THREE_MONTHS_EVENTS = [
-    { title: 'Quarterly Feedback', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', daysAfter: 90 }
+    { title: 'Quarterly Feedback', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', isTLPresent: true, daysAfter: 90 }
 ];
 var SIX_MONTHS_EVENTS = [
-    { title: 'Probation Feedback', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', daysAfter: 180 }
+    { title: 'Probation Feedback', start: '17:00:00 UTC', end: '17:30:00 UTC', description: 'Feedback', isTLPresent: true, daysAfter: 180 }
 ];
 var schedule = [DAY_ONE_EVENTS, DAY_TWO_EVENTS, DAY_THREE_EVENTS, DAY_FOUR_EVENTS, DAY_FIVE_EVENTS, DAY_SIX_EVENTS, DAY_SEVEN_EVENTS, DAY_EIGHT_EVENTS, DAY_TEN_EVENTS, DAY_FIFTEEN_EVENTS, ONE_MONTH_EVENTS, THREE_MONTHS_EVENTS, SIX_MONTHS_EVENTS];
 var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
@@ -153,6 +153,7 @@ function getDateString(date) {
     ];
     return monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
 }
+exports.getDateString = getDateString;
 /* ------------------------------------------------------------- */
 // CREATE MEETINGS  
 /* ------------------------------------------------------------- */

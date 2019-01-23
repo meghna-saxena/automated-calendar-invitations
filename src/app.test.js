@@ -11,29 +11,20 @@ describe('isWeekend', function () {
         expect(result).toBeFalsy();
     });
     it('should return true for weekend', function () {
-        // Given | Arrange
         var date = new Date('January 05, 2019'); // Saturday
-        // When | Act
         var result = app_1.isWeekend(date);
-        // Then | Assert
         expect(result).toBeTruthy();
     });
 });
 describe('isStaticHoliday', function () {
     it('should return true for holiday', function () {
-        // Given
         var date = new Date('Dec 25, 2019'); // Holiday
-        // When
         var result = app_1.isStaticHoliday(date);
-        // Then | Assert
         expect(result).toBeTruthy();
     });
     it('should return false when not a holiday', function () {
-        // Given
         var date = new Date('January 03, 2019'); // Not a holiday
-        // When
         var result = app_1.isStaticHoliday(date);
-        // Then | Assert
         expect(result).toBeFalsy();
     });
 });
@@ -76,5 +67,23 @@ describe('getNextWorkingDay', function () {
         var expectedDate = new Date('January 09, 2019'); // after 7 days and not a holiday
         var actualDate = app_1.getNextWorkingDay(currentDate, 7);
         expect(actualDate.getTime()).toBe(expectedDate.getTime());
+    });
+});
+describe('getDateString', function () {
+    it('should return date in the format `MM DD,YYYY`', function () {
+        var date = new Date('17 Janaury 2019');
+        var expectedDate = 'January 17, 2019';
+        var actualDate = app_1.getDateString(date);
+        expect(actualDate).toBe(expectedDate);
+    });
+});
+describe('createMeetings', function () {
+    it('should get return value of date from getDateString', function () {
+    });
+    it('should call createMeetingsPerDay', function () {
+    });
+    it('should pass each item of schedules array to createMeetingsPerDay', function () {
+    });
+    it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', function () {
     });
 });

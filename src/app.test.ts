@@ -1,4 +1,4 @@
-import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay } from './app';
+import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString } from './app';
 
 describe('isWeekend', () => {
     it('should return false for weekday', () => {
@@ -13,37 +13,28 @@ describe('isWeekend', () => {
     });
 
     it('should return true for weekend', () => {
-        // Given | Arrange
         const date = new Date('January 05, 2019'); // Saturday
 
-        // When | Act
         const result = isWeekend(date);
 
-        // Then | Assert
         expect(result).toBeTruthy();
     });
 })
 
 describe('isStaticHoliday', () => {
     it('should return true for holiday', () => {
-        // Given
         const date = new Date('Dec 25, 2019'); // Holiday
 
-        // When
         const result = isStaticHoliday(date);
 
-        // Then | Assert
         expect(result).toBeTruthy();
     })
 
     it('should return false when not a holiday', () => {
-        // Given
         const date = new Date('January 03, 2019'); // Not a holiday
 
-        // When
         const result = isStaticHoliday(date);
 
-        // Then | Assert
         expect(result).toBeFalsy();
     });
 })
@@ -105,3 +96,32 @@ describe('getNextWorkingDay', () => {
         expect(actualDate.getTime()).toBe(expectedDate.getTime());
     });
 });
+
+describe('getDateString', () => {
+    it('should return date in the format `MM DD,YYYY`', () => {
+        const date = new Date('17 Janaury 2019');
+        const expectedDate = 'January 17, 2019';
+
+        const actualDate = getDateString(date)
+
+        expect(actualDate).toBe(expectedDate);
+    })
+})
+
+describe('createMeetings', () => {
+    it('should get return value of date from getDateString', () => {
+
+    })
+
+    it('should call createMeetingsPerDay', () => {
+
+    })
+
+    it('should pass each item of schedules array to createMeetingsPerDay', () => {
+
+    })
+
+    it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', () => {
+
+    })
+})
