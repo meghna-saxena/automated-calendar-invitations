@@ -1,3 +1,43 @@
+const workingDayEvents = [
+    ['Buddy Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '0'],
+    ['TL Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '1']
+];
+
+const calendarDayEvents = [
+    ['Buddy Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '0'],
+    ['TL Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '1']
+];
+
+let SCHEDULE_BY_WORKING_DAY: Event[] = [];
+for (let i = 0; i < workingDayEvents.length; i++) {
+    var data = workingDayEvents[i];
+    SCHEDULE_BY_WORKING_DAY.push(getEventsFromSheetData(data[0], data[1], data[2], data[3], data[4], data[5]));
+}
+
+let SCHEDULE_ON_CALENDAR_DAY: Event[] = [];
+for (let i = 0; i < calendarDayEvents.length; i++) {
+    var data = calendarDayEvents[i];
+    SCHEDULE_ON_CALENDAR_DAY.push(getEventsFromSheetData(data[0], data[1], data[2], data[3], data[4], data[5]));
+}
+
+export function getEventsFromSheetData(title: string, start: string, end: string, description: string, isTLPresentString: string, dayString: string) {
+    const isTLPresent = JSON.parse(isTLPresentString);
+    const day = JSON.parse(dayString);
+
+    const event: Event = {
+        title: title,
+        start: start,
+        end: end,
+        description: description,
+        isTLPresent: isTLPresent,
+        day: day
+    }
+    return event;
+}
+
+console.log('SCHEDULE_BY_WORKING_DAY', SCHEDULE_BY_WORKING_DAY)
+console.log('SCHEDULE_ON_CALENDAR_DAY', SCHEDULE_ON_CALENDAR_DAY)
+
 export function runOnSubmit() {
     var date = new Date('April 01, 1993');
     var newEmployeeEmailId = 'meghna.srivastava+newEmployeeEmailId@auto1.com';
@@ -15,38 +55,6 @@ export interface Event {
     isTLPresent: boolean,
     day: number
 }
-
-const SCHEDULE_BY_WORKING_DAY: Event[] = [
-    { title: 'Buddy Intro', start: '11:00:00 ', end: '11:20:00 ', description: 'Introduction to Team Members and their roles; Check access (Laptop, Email, Slack); explain the Engineering organisation (Groups and Teams)', isTLPresent: false, day: 1 },
-    { title: 'Team Lead Intro', start: '14:00:00 ', end: '14:20:00 ', description: 'Introduction to Team Members and their roles; Check access (Laptop, Email, Slack); explain the Engineering organisation (Groups and Teams)', isTLPresent: true, day: 1 },
-    { title: 'Buddy Recap', start: '17:00:00 ', end: '17:15:00 ', description: 'Everything fine for day 1?', isTLPresent: false, day: 1 },
-    // Day2
-    { title: 'Buddy Knowledge Sharing', start: '10:00:00 ', end: '10:30:00 ', description: 'Knowledge Sharing Services/Applications Overview', isTLPresent: false, day: 2 },
-    { title: 'Buddy Pairing Work', start: '15:00:00 ', end: '17:30:00 ', description: 'Get hands on by working on the Buddy\'s task together with him', isTLPresent: false, day: 2 },
-    // Day3
-    { title: 'Team Lead Knowledge Sharing', start: '10:00:00 ', end: '11:00:00 ', description: 'Business scenarios and Services/Applications', isTLPresent: true, day: 3 },
-    { title: 'Buddy Pairing Work', start: '14:00:00 ', end: '14:20:00 ', description: 'Introduction to first own task', isTLPresent: false, day: 3 },
-    // Day4
-    { title: 'Buddy Status Check', start: '10:10:00 ', end: '10:30:00 ', isTLPresent: false, day: 4 },
-    // Day5
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 ', end: '10:30:00 ', description: 'Common libraries and testing', isTLPresent: false, day: 5 },
-    { title: 'Team Lead Recap', start: '17:00:00 ', end: '17:20:00 ', description: 'Feedback on first week', isTLPresent: true, day: 5 },
-    // Day6
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 ', end: '10:30:00 ', description: 'Monitoring and Operations of Services/Applications', isTLPresent: false, day: 6 },
-    // Day7
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 ', end: '10:30:00 ', description: 'Deployments, Maintenance and troubleshooting Services/Applications', isTLPresent: false, day: 7 },
-    // Day8
-    { title: 'Buddy Knowledge Sharing', start: '10:10:00 ', end: '10:30:00 ', description: 'Writing and maintaining Acceptance and End-to-end Tests', isTLPresent: false, day: 8 }];
-
-const SCHEDULE_ON_CALENDAR_DAY: Event[] = [
-    // Day10
-    { title: 'Buddy Recap', start: '17:00:00 ', end: '17:30:00 ', isTLPresent: false, day: 10 },
-    // Day15
-    { title: 'Team Lead Recap', start: '17:00:00 ', end: '17:30:00 ', description: 'How was onboarding?', isTLPresent: true, day: 15 },
-    { title: 'Director Recap', start: '17:00:00 ', end: '17:30:00 ', description: 'Feedback', isTLPresent: true, day: 30 },
-    { title: 'Quarterly Feedback', start: '17:00:00 ', end: '17:30:00 ', description: 'Feedback', isTLPresent: true, day: 90 },
-    { title: 'Probation Feedback', start: '17:00:00 ', end: '17:30:00 ', description: 'Feedback', isTLPresent: true, day: 180 }
-];
 
 var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -92,11 +100,11 @@ export function getNextWorkingDay(date: Date, day: number = 1): Date { //should 
 };
 
 export function getNthWorkingDay(date: Date, n: number): Date {
-    if(n == 1) {
+    if (n == 1) {
         return date;
     } else {
         const nextDay = getNextWorkingDay(date);
-        return getNthWorkingDay(nextDay, n-1);
+        return getNthWorkingDay(nextDay, n - 1);
     }
 }
 

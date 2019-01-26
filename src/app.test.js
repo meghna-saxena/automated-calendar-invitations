@@ -116,26 +116,6 @@ describe('getGuestStringBy', function () {
         expect(result).toBe(mandatoryEmail + ", " + buddyEmail);
     });
 });
-describe('createMeetings', function () {
-    it('should pass each item of schedule array to createMeetingsPerDay', function () {
-        var mockCreateMeetingPerDay = jest.fn(function (x) { return x; });
-        var schedule = [0, 1, 2];
-        // createMeetings();
-        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
-        // expect(mockCreateMeetingPerDay.mock.calls[0][0]).toBe(0);
-    });
-    it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', function () {
-        var date = Date.now();
-        var TLEmail = 'ddsdadad';
-        var buddyEmail = 'asddadadt';
-        var newEmployeeEmail = 'sdada';
-        var schedule = [0, 1, 2];
-        var mockCreateMeetingPerDay = jest.fn(function (x) { return x; });
-        // createMeetings(TLEmail, buddyEmail, newEmployeeEmail, schedule);
-        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
-        expect(mockCreateMeetingPerDay.mock.calls);
-    });
-});
 describe('createMeetingForEvent', function () {
     it('should create meetings for given day', function () {
         var date = new Date('02 Janaury 2019'); // Wednesday
@@ -150,5 +130,28 @@ describe('createMeetingForEvent', function () {
         var guests = "guest";
         app_1.createMeetingForEvent(date, event, guests);
         // Then => assert that mock is called.
+    });
+});
+describe('getEventsFromSheetData', function () {
+    it('should return object of type `event`', function () {
+        //Given
+        var title = 'Buddy Intro';
+        var start = '11:00:00';
+        var end = '11:20:00';
+        var description = 'Introduction to Team Members';
+        var isTLPresent = 'false';
+        var day = '0';
+        var expected = {
+            title: 'Buddy Intro',
+            start: '11:00:00',
+            end: '11:20:00',
+            description: 'Introduction to Team Members',
+            isTLPresent: false,
+            day: 0
+        };
+        // When
+        var result = app_1.getEventsFromSheetData(title, start, end, description, isTLPresent, day);
+        // Then
+        expect(result).toEqual(expected);
     });
 });

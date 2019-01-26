@@ -1,4 +1,4 @@
-import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString, getGuestStringBy, createMeetingForEvent, Event, getNthWorkingDay } from './app';
+import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString, getGuestStringBy, createMeetingForEvent, Event, getNthWorkingDay, getEventsFromSheetData } from './app';
 
 describe('isWeekend', () => {
     it('should return false for weekday', () => {
@@ -162,31 +162,6 @@ describe('getGuestStringBy', () => {
     });
 });
 
-describe('createMeetings', () => {
-    it('should pass each item of schedule array to createMeetingsPerDay', () => {
-        const mockCreateMeetingPerDay = jest.fn(x => x);
-        const schedule = [0, 1, 2];
-        // createMeetings();
-
-        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
-        // expect(mockCreateMeetingPerDay.mock.calls[0][0]).toBe(0);
-    })
-
-    it('should pass starting date, Tl email, buddy email, new joinee email to createMeetingsPerDay', () => {
-        const date = Date.now();
-        const TLEmail = 'ddsdadad';
-        const buddyEmail = 'asddadadt';
-        const newEmployeeEmail = 'sdada';
-        const schedule = [0, 1, 2];
-
-        const mockCreateMeetingPerDay = jest.fn(x => x);
-        // createMeetings(TLEmail, buddyEmail, newEmployeeEmail, schedule);
-
-        expect(mockCreateMeetingPerDay.mock.calls).toBeTruthy();
-        expect(mockCreateMeetingPerDay.mock.calls)
-    })
-})
-
 describe('createMeetingForEvent', () => {
     it('should create meetings for given day', () => {
         const date = new Date('02 Janaury 2019'); // Wednesday
@@ -203,5 +178,32 @@ describe('createMeetingForEvent', () => {
         createMeetingForEvent(date, event, guests);
 
         // Then => assert that mock is called.
+    });
+});
+
+describe('getEventsFromSheetData', () => {
+    it('should return object of type `event`', () => {
+        //Given
+        const title = 'Buddy Intro';
+        const start = '11:00:00';
+        const end = '11:20:00';
+        const description = 'Introduction to Team Members';
+        const isTLPresent = 'false';
+        const day = '0';
+        
+        const expected: Event = {
+            title: 'Buddy Intro',
+            start: '11:00:00',
+            end: '11:20:00',
+            description: 'Introduction to Team Members',
+            isTLPresent: false,
+            day: 0
+        }
+
+        // When
+        const result = getEventsFromSheetData(title, start, end, description, isTLPresent, day);
+
+        // Then
+        expect(result).toEqual(expected);
     });
 });
