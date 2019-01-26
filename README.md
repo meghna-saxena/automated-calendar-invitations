@@ -4,7 +4,7 @@
 
 - Copy the code from apps-script/calendar.js and paste inside apps script IDE. Save the file as calendar.gs, and save the project as Onboarding Calendar.
 
-- The script is integrated with a private Google form ID 1OXCKgB8F8DWB1Fwqq0uunCtWry-FZr5_tt9yd_Mj5h41.
+- The script is integrated with a private Google form ID `1OXCKgB8F8DWB1Fwqq0uunCtWry-FZr5_tt9yd_Mj5h41`.
 
 - On running the script for the first time, it asks for authorization permission.
 
