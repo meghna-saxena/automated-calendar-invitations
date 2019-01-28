@@ -46,21 +46,18 @@ describe('isHoliday', function () {
         expect(weekDayResult).toBeFalsy();
     });
 });
-function expectOnDates(actual, expected) {
-    expect(actual.getTime()).toBe(expected.getTime());
-}
 describe('getNextWorkingDay', function () {
     it('should return next date if it is not a holiday', function () {
         var currentDate = new Date('January 02, 2019');
         var expectedDate = new Date('January 03, 2019'); // Not a holiday
         var actualDate = app_1.getNextWorkingDay(currentDate);
-        expectOnDates(actualDate, expectedDate);
+        expect(actualDate).toEqual(expectedDate);
     });
     it('should find and return another date if next day is a holiday', function () {
         var currentDate = new Date('02 October 2019');
         var expectedDate = new Date('04 October 2019'); // October 03, 2019 is a holiday
         var actualDate = app_1.getNextWorkingDay(currentDate);
-        expectOnDates(actualDate, expectedDate);
+        expect(actualDate).toEqual(expectedDate);
     });
     it('should return the working date after given days if not a holiday', function () {
         var currentDate = new Date('January 02, 2019'); // Wednesday
@@ -80,19 +77,31 @@ describe('getNthWorkingDay', function () {
         var date = new Date('January 04, 2019'); // Friday
         var expected = new Date('January 04, 2019');
         var actual = app_1.getNthWorkingDay(date, 1);
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
     });
     it('should return 2nd day when n=2', function () {
         var date = new Date('January 04, 2019'); // Friday
         var expected = new Date('January 07, 2019');
         var actual = app_1.getNthWorkingDay(date, 2);
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
     });
     it('should return 5th day when n=5', function () {
         var date = new Date('January 04, 2019'); // Friday
         var expected = new Date('January 10, 2019');
         var actual = app_1.getNthWorkingDay(date, 5);
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
+    });
+    it('should return 10th day when n=10', function () {
+        var date = new Date('January 04, 2019'); // Friday
+        var expected = new Date('January 17, 2019');
+        var actual = app_1.getNthWorkingDay(date, 10);
+        expect(actual).toEqual(expected);
+    });
+    it('should return 15th day when n=15', function () {
+        var date = new Date('January 04, 2019'); // Friday
+        var expected = new Date('January 24, 2019');
+        var actual = app_1.getNthWorkingDay(date, 15);
+        expect(actual).toEqual(expected);
     });
 });
 describe('getDateString', function () {

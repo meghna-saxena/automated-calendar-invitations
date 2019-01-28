@@ -63,10 +63,6 @@ describe('isHoliday', () => {
     })
 });
 
-function expectOnDates(actual: Date, expected: Date) {
-    expect(actual.getTime()).toBe(expected.getTime());
-}
-
 describe('getNextWorkingDay', () => {
     it('should return next date if it is not a holiday', () => {
         const currentDate = new Date('January 02, 2019');
@@ -74,7 +70,7 @@ describe('getNextWorkingDay', () => {
 
         const actualDate = getNextWorkingDay(currentDate);
 
-        expectOnDates(actualDate, expectedDate);
+        expect(actualDate).toEqual(expectedDate);
     });
 
     it('should find and return another date if next day is a holiday', () => {
@@ -83,7 +79,7 @@ describe('getNextWorkingDay', () => {
 
         const actualDate = getNextWorkingDay(currentDate);
 
-        expectOnDates(actualDate, expectedDate);
+        expect(actualDate).toEqual(expectedDate);
     });
 
     it('should return the working date after given days if not a holiday', () => {
@@ -112,7 +108,7 @@ describe('getNthWorkingDay', () => {
 
         const actual = getNthWorkingDay(date, 1);
 
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
     });
 
     it('should return 2nd day when n=2', () => {
@@ -121,7 +117,7 @@ describe('getNthWorkingDay', () => {
 
         const actual = getNthWorkingDay(date, 2);
 
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
     });
 
     it('should return 5th day when n=5', () => {
@@ -130,7 +126,25 @@ describe('getNthWorkingDay', () => {
 
         const actual = getNthWorkingDay(date, 5);
 
-        expectOnDates(actual, expected);
+        expect(actual).toEqual(expected);
+    });
+
+    it('should return 10th day when n=10', () => {
+        const date = new Date('January 04, 2019'); // Friday
+        const expected = new Date('January 17, 2019');
+
+        const actual = getNthWorkingDay(date, 10);
+
+        expect(actual).toEqual(expected);
+    });
+
+    it('should return 15th day when n=15', () => {
+        const date = new Date('January 04, 2019'); // Friday
+        const expected = new Date('January 24, 2019');
+
+        const actual = getNthWorkingDay(date, 15);
+
+        expect(actual).toEqual(expected);
     });
 });
 
@@ -190,7 +204,7 @@ describe('getEventsFromSheetData', () => {
         const description = 'Introduction to Team Members';
         const isTLPresent = 'false';
         const day = '0';
-        
+
         const expected: Event = {
             title: 'Buddy Intro',
             start: '11:00:00',

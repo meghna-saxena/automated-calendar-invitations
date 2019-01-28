@@ -2,22 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var workingDayEvents = [
     ['Buddy Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '0'],
-    ['TL Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '1']
+    ['TL Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '1'],
+    ['TL Feedback', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '15']
 ];
 var calendarDayEvents = [
     ['Buddy Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '0'],
     ['TL Intro', '11:00:00', '11:20:00', 'Introduction to Team Members', 'false', '1']
 ];
-var SCHEDULE_BY_WORKING_DAY = [];
-for (var i = 0; i < workingDayEvents.length; i++) {
-    var data = workingDayEvents[i];
-    SCHEDULE_BY_WORKING_DAY.push(getEventsFromSheetData(data[0], data[1], data[2], data[3], data[4], data[5]));
-}
-var SCHEDULE_ON_CALENDAR_DAY = [];
-for (var i = 0; i < calendarDayEvents.length; i++) {
-    var data = calendarDayEvents[i];
-    SCHEDULE_ON_CALENDAR_DAY.push(getEventsFromSheetData(data[0], data[1], data[2], data[3], data[4], data[5]));
-}
+var SCHEDULE_BY_WORKING_DAY = workingDayEvents.map(function (e) { return getEventsFromSheetData(e[0], e[1], e[2], e[3], e[4], e[5]); });
+var SCHEDULE_ON_CALENDAR_DAY = calendarDayEvents.map(function (e) { return getEventsFromSheetData(e[0], e[1], e[2], e[3], e[4], e[5]); });
 function getEventsFromSheetData(title, start, end, description, isTLPresentString, dayString) {
     var isTLPresent = JSON.parse(isTLPresentString);
     var day = JSON.parse(dayString);
@@ -32,8 +25,6 @@ function getEventsFromSheetData(title, start, end, description, isTLPresentStrin
     return event;
 }
 exports.getEventsFromSheetData = getEventsFromSheetData;
-console.log('SCHEDULE_BY_WORKING_DAY', SCHEDULE_BY_WORKING_DAY);
-console.log('SCHEDULE_ON_CALENDAR_DAY', SCHEDULE_ON_CALENDAR_DAY);
 function runOnSubmit() {
     var date = new Date('April 01, 1993');
     var newEmployeeEmailId = 'meghna.srivastava+newEmployeeEmailId@auto1.com';
@@ -66,6 +57,7 @@ function isStaticHoliday(date) {
 }
 exports.isStaticHoliday = isStaticHoliday;
 function isWeekend(date) {
+    console.log(date);
     return (date.getDay() == 0 || date.getDay() == 6);
 }
 exports.isWeekend = isWeekend;
@@ -136,8 +128,6 @@ function createMeetingsOnCalendarDay(startDate, newEmployeeEmailId, TLEmailId, b
 function createMeetingForEvent(date, event, guests) {
     var startDate = new Date(getDateString(date) + " " + event.start);
     var endDate = new Date(getDateString(date) + " " + event.end);
-    // CalendarApp.getDefaultCalendar().createEvent(
-    //     event.title, startDate, endDate,
-    //     { guests: guests, sendInvites: true }).setDescription(event.description);
+    console.log(event.title, startDate, endDate);
 }
 exports.createMeetingForEvent = createMeetingForEvent;
