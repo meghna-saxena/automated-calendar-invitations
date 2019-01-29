@@ -28,6 +28,18 @@ describe('isStaticHoliday', function () {
         expect(result).toBeFalsy();
     });
 });
+describe('isFlexibleHoliday', function () {
+    it('should return true for holiday', function () {
+        var date = new Date('April 19, 2019'); // Good Friday
+        var result = app_1.isFlexibleHoliday(date);
+        expect(result).toBeTruthy();
+    });
+    it('should return false when not a holiday', function () {
+        var date = new Date('April 23, 2019'); // Not a holiday
+        var result = app_1.isFlexibleHoliday(date);
+        expect(result).toBeFalsy();
+    });
+});
 describe('isHoliday', function () {
     it('should return true if weekend or static holiday', function () {
         var holiday = new Date('Dec 25, 2019'); // Holiday
@@ -141,6 +153,26 @@ describe('createMeetingForEvent', function () {
         // Then => assert that mock is called.
     });
 });
+describe('createMeetingOnCalendarDay', function () {
+    it('should create meetings on given calendar day', function () {
+        var targetDate = new Date('02 Janaury 2019');
+        var newEmployeeEmailId = 'abc@example.com';
+        var TLEmailId = 'abc@example.com';
+        var buddyEmailId = 'abc@example.com';
+        app_1.createMeetingsOnCalendarDay(targetDate, newEmployeeEmailId, TLEmailId, buddyEmailId);
+        // Then => assert that mock is called.
+    });
+});
+// describe('createMeetingByWorkingDay', () => {
+//     it('should create meetings on given calendar day', () => {
+//         const targetDate = new Date('02 Janaury 2019');
+//         const newEmployeeEmailId = 'abc@example.com';
+//         const TLEmailId = 'abc@example.com';
+//         const buddyEmailId = 'abc@example.com';
+//         createMeetingsByWorkingDay(targetDate, newEmployeeEmailId, TLEmailId, buddyEmailId);
+//         // Then => assert that mock is called.
+//     });
+// });
 describe('getEventsFromSheetData', function () {
     it('should return object of type `event`', function () {
         //Given

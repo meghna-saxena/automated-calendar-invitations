@@ -57,12 +57,47 @@ function isStaticHoliday(date) {
 }
 exports.isStaticHoliday = isStaticHoliday;
 function isWeekend(date) {
-    console.log(date);
     return (date.getDay() == 0 || date.getDay() == 6);
 }
 exports.isWeekend = isWeekend;
+function _easter(year) {
+    var k = Math.floor(year / 100);
+    var m = 15 + Math.floor((3 * k + 3) / 4) - Math.floor((8 * k + 13) / 25);
+    var s = 2 - Math.floor((3 * k + 3) / 4);
+    var a = year % 19;
+    var d = (19 * a + m) % 30;
+    var r = Math.floor((d + a / 11) / 29);
+    var og = 21 + d - r;
+    var sz = 7 - Math.floor(year + year / 4 + s) % 7;
+    var oe = 7 - (og - sz) % 7;
+    var os = og + oe;
+    var daysPerMonth = [0, 31, 28, 31, 30, 31, 30, 31, 31];
+    var day = os;
+    var month;
+    for (month = 3; month < 8; month++) {
+        if (day <= daysPerMonth[month]) {
+            break;
+        }
+        day -= daysPerMonth[month];
+    }
+    month = month - 1;
+    return new Date(year, month, day);
+}
+var ONE_DAY_IN_SECONDS = 24 * 60 * 60;
+exports.isFlexibleHoliday = function (date) {
+    var year = date.getFullYear();
+    var easterDate = _easter(year);
+    var easterTimestamp = easterDate.getTime() / 1000;
+    var dateTimestamp = date.getTime() / 1000;
+    var goodFridayTimestamp = easterTimestamp - 2 * ONE_DAY_IN_SECONDS;
+    var easterMondayTimestamp = easterTimestamp + ONE_DAY_IN_SECONDS;
+    var ascensionDayTimestamp = easterTimestamp + 39 * ONE_DAY_IN_SECONDS;
+    var whitMondayTimestamp = easterTimestamp + 50 * ONE_DAY_IN_SECONDS;
+    var timestamps = [goodFridayTimestamp, easterMondayTimestamp, ascensionDayTimestamp, whitMondayTimestamp];
+    return timestamps.includes(dateTimestamp);
+};
 function isHoliday(date) {
-    return isWeekend(date) || isStaticHoliday(date);
+    return isWeekend(date) || isStaticHoliday(date) || exports.isFlexibleHoliday(date);
 }
 exports.isHoliday = isHoliday;
 ;
@@ -113,21 +148,23 @@ function createMeetingsByWorkingDay(startDate, newEmployeeEmailId, TLEmailId, bu
         var event_1 = SCHEDULE_BY_WORKING_DAY[i];
         var targetDate = getNthWorkingDay(startDate, event_1.day);
         var guests = getGuestStringBy(event_1.isTLPresent, buddyEmailId, TLEmailId, newEmployeeEmailId);
-        createMeetingForEvent(targetDate, event_1, guests);
+        return createMeetingForEvent(targetDate, event_1, guests);
     }
 }
+exports.createMeetingsByWorkingDay = createMeetingsByWorkingDay;
 // iterates and create meetings SCHEDULE_ON_CALENDAR_DAY
 function createMeetingsOnCalendarDay(startDate, newEmployeeEmailId, TLEmailId, buddyEmailId) {
     for (var i = 0; i < SCHEDULE_ON_CALENDAR_DAY.length; i++) {
         var event_2 = SCHEDULE_ON_CALENDAR_DAY[i];
         var targetDate = getNextWorkingDay(startDate, event_2.day);
         var guests = getGuestStringBy(event_2.isTLPresent, buddyEmailId, TLEmailId, newEmployeeEmailId);
-        createMeetingForEvent(targetDate, event_2, guests);
+        return createMeetingForEvent(targetDate, event_2, guests);
     }
 }
+exports.createMeetingsOnCalendarDay = createMeetingsOnCalendarDay;
 function createMeetingForEvent(date, event, guests) {
     var startDate = new Date(getDateString(date) + " " + event.start);
     var endDate = new Date(getDateString(date) + " " + event.end);
-    console.log(event.title, startDate, endDate);
+    return [event.title, startDate, endDate];
 }
 exports.createMeetingForEvent = createMeetingForEvent;

@@ -1,4 +1,4 @@
-import { isWeekend, isStaticHoliday, isHoliday, getNextWorkingDay, getDateString, getGuestStringBy, createMeetingForEvent, Event, getNthWorkingDay, getEventsFromSheetData } from './app';
+import { isWeekend, isStaticHoliday, isFlexibleHoliday, isHoliday, getNextWorkingDay, getDateString, getGuestStringBy, createMeetingForEvent, createMeetingsByWorkingDay, createMeetingsOnCalendarDay, Event, getNthWorkingDay, getEventsFromSheetData } from './app';
 
 describe('isWeekend', () => {
     it('should return false for weekday', () => {
@@ -34,6 +34,24 @@ describe('isStaticHoliday', () => {
         const date = new Date('January 03, 2019'); // Not a holiday
 
         const result = isStaticHoliday(date);
+
+        expect(result).toBeFalsy();
+    });
+})
+
+describe('isFlexibleHoliday', () => {
+    it('should return true for holiday', () => {
+        const date = new Date('April 19, 2019'); // Good Friday
+
+        const result = isFlexibleHoliday(date);
+
+        expect(result).toBeTruthy();
+    })
+
+    it('should return false when not a holiday', () => {
+        const date = new Date('April 23, 2019'); // Not a holiday
+
+        const result = isFlexibleHoliday(date);
 
         expect(result).toBeFalsy();
     });
@@ -194,6 +212,32 @@ describe('createMeetingForEvent', () => {
         // Then => assert that mock is called.
     });
 });
+
+describe('createMeetingOnCalendarDay', () => {
+    it('should create meetings on given calendar day', () => {
+        const targetDate = new Date('02 Janaury 2019');
+        const newEmployeeEmailId = 'abc@example.com';
+        const TLEmailId = 'abc@example.com';
+        const buddyEmailId = 'abc@example.com';
+
+        createMeetingsOnCalendarDay(targetDate, newEmployeeEmailId, TLEmailId, buddyEmailId);
+
+        // Then => assert that mock is called.
+    });
+});
+
+// describe('createMeetingByWorkingDay', () => {
+//     it('should create meetings on given calendar day', () => {
+//         const targetDate = new Date('02 Janaury 2019');
+//         const newEmployeeEmailId = 'abc@example.com';
+//         const TLEmailId = 'abc@example.com';
+//         const buddyEmailId = 'abc@example.com';
+
+//         createMeetingsByWorkingDay(targetDate, newEmployeeEmailId, TLEmailId, buddyEmailId);
+
+//         // Then => assert that mock is called.
+//     });
+// });
 
 describe('getEventsFromSheetData', () => {
     it('should return object of type `event`', () => {
